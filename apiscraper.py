@@ -626,13 +626,16 @@ while True:
                 + str(processing_time)
                 + " seconds... Tesla server or DB slow?"
             )
-        logger.info(
-            "Asleep since: "
-            + datetime.fromtimestamp(asleep_since).isoformat()
-            + " Sleeping for "
-            + str(poll_interval)
-            + " seconds.."
-        )
+        if asleep_since == 0:
+            logger.info(f"Car is awake. Waiting for {poll_interval} seconds...")
+        else:
+            logger.info(
+                "Asleep since: "
+                + datetime.fromtimestamp(asleep_since).isoformat()
+                + " Sleeping for "
+                + str(poll_interval)
+                + " seconds.."
+            )
         busy_since = 0
     else:
         # If we have scheduled charging, lets wake up just in time
