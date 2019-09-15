@@ -19,6 +19,7 @@
 """
 
 import json
+from datetime import datetime
 import logging
 import queue
 import sys
@@ -627,7 +628,7 @@ while True:
             )
         logger.info(
             "Asleep since: "
-            + str(asleep_since)
+            + datetime.fromtimestamp(asleep_since).isoformat()
             + " Sleeping for "
             + str(poll_interval)
             + " seconds.."
