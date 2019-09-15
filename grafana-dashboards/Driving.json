@@ -1714,6 +1714,11 @@
           "op": "=",
           "text": "N/A",
           "value": "null"
+        },
+        {
+          "op": "=",
+          "text": "offline",
+          "value": "sleep"
         }
       ],
       "valueTextColor": "#000000",
