@@ -155,7 +155,7 @@ class StateMonitor(object):
                 or self.old_values["charge_state"].get("charging_state", "")
                 == "Stopped"
             )
-            or self.old_values["charge_state"].get("charger_voltage", 0) > 0
+            or self.old_values["charge_state"].get("charger_voltage", 0) > 1
             or self.old_values["charge_state"].get("charger_actual_current", 0) > 0
         ):
             return True
