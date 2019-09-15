@@ -477,7 +477,7 @@ while True:
             # round of requests
             car_active_state = "oneshot request"
             logger.info("Oneshot update requested")
-            if is_asleep == "asleep":
+            if is_asleep == "asleep" or is_asleep == 'offline':
                 logger.info("Waking the car up for the oneshot request")
                 state_monitor.wake_up()
                 resume = True
@@ -492,11 +492,11 @@ while True:
             except:
                 logger.info("Hostname Exception Caught")
         # Car woke up
-        if is_asleep == 'asleep' and state_monitor.vehicle['state'] == 'online':
+        if (is_asleep == 'offline' or is_asleep == 'asleep') and state_monitor.vehicle['state'] == 'online':
             poll_interval = 0
             asleep_since = 0
 
-        if state_monitor.vehicle['state'] == 'asleep' and (is_asleep == 'online' or asleep_since == 0):
+        if (state_monitor.vehicle['state'] == 'asleep' or state_monitor.vehicle['state'] == 'offline') and (is_asleep == 'online' or asleep_since == 0):
             asleep_since = time.time()
 
         is_asleep = state_monitor.vehicle['state']
@@ -520,12 +520,12 @@ while True:
             influx_client.write_points(state_body)
         logger.debug("Car State: " + is_asleep +
                     " Poll Interval: " + str(poll_interval))
-        if is_asleep == 'offline' or (is_asleep == 'asleep' and a_allow_sleep == 1):
+        if is_asleep == 'offline' or ((is_asleep == 'asleep') and a_allow_sleep == 1):
             logger.debug("Car is asleep or offline...")
             poll_interval = 64
 
         if poll_interval >= 0:
-            if is_asleep != 'asleep':
+            if is_asleep != 'asleep' and is_asleep != 'offline':
                 poll_interval = state_monitor.check_states(poll_interval)
                 resume = False
         elif poll_interval < 0:
